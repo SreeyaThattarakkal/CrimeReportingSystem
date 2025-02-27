@@ -1,0 +1,82 @@
+{% extends  'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<style>
+  #admin_head{
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 3em;
+    letter-spacing: -2px;
+    border-bottom: 2px solid black;
+    text-transform: uppercase;
+  }
+  div.dataTables_wrapper div.dataTables_length select {
+    width: 65px;
+    display: inline-block;
+    height: 0%;
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/b-1.2.4/b-html5-1.2.4/b-print-1.2.4/fh-3.1.2/r-2.1.1/sc-1.4.2/datatables.min.js"></script>
+<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/css/style.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/b-1.2.4/b-html5-1.2.4/b-print-1.2.4/fh-3.1.2/r-2.1.1/sc-1.4.2/datatables.min.css" />
+
+
+<h1 id="admin_head">FIR</h1><br>
+
+
+<table class="table table-striped" id="table_id">
+  <thead >
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">FIR Code</th>
+      <th scope="col">Case</th>
+      <th scope="col">Assignee</th>
+      <th scope="col">Created at</th>
+      <th scope="col">Notes</th>
+      <th scope="col">Status</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for i in fir %}
+    <tr>
+      <td scope="row">{{forloop.counter}}</td>
+      <td>{{i.fir_code}}</td>
+      <td>{{i.complaint}}</td>
+      <td>{{i.assignee}}</td>
+      <td>{{i.created_at}}</td>
+      <td>{{i.extra_notes}}</td>
+      <td>{{i.status}}</td>
+      <td> {% if user_type == 1 %}
+<a class="btn btn-primary" href="{% url 'home:delete-fir' i.id%}" onclick="return confirm('Are you sure you want to delete this?')"  role="button">Delete</a>
+    {% endif %}     
+    {% if user_type == 3 %}
+    {% if i.status == 'REGISTERED' %}
+<a class="btn btn-primary" href="{% url 'home:solved-fir' i.id%}" onclick="return confirm('Solved this case?')"  role="button">SOLVED</a>
+    {% endif %} 
+    {% if i.status == 'SOLVED' %}
+    <p>Case closed</p>
+    {% endif %} 
+    {% endif %} 
+    
+</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+
+
+  <script>
+    $(document).ready( function () {
+        $('#table_id').DataTable();
+    } );
+</script>
+
+
+{% endblock%}
