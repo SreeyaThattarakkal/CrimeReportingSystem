@@ -1,0 +1,115 @@
+{% extends  'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<style>
+  #admin_head{
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 3em;
+    letter-spacing: -2px;
+    border-bottom: 2px solid black;
+    text-transform: uppercase;
+  }
+
+  .outbox{
+    text-align: center;
+  }
+  .container{
+    width: 50%;
+    display: inline-block;
+  }
+
+</style>
+
+<!-- datatable -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/b-1.2.4/b-html5-1.2.4/b-print-1.2.4/fh-3.1.2/r-2.1.1/sc-1.4.2/datatables.min.js"></script>
+<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/css/style.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/b-1.2.4/b-html5-1.2.4/b-print-1.2.4/fh-3.1.2/r-2.1.1/sc-1.4.2/datatables.min.css" />
+<!-- chart -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<h1 id="admin_head">Dashboard</h1><br><br>
+
+
+  
+<!-- chart -->
+
+
+<div class="chart-container" id="fadeoutchart" style="height:40%; width:60%;text-align: center;margin-left: 20%;">
+  <canvas id="myChart"></canvas>
+</div><br> 
+<!-- --------------- -->
+
+{% if user_type == 1 %}
+<h3 style="text-decoration: underline;">Newly created Users</h3><br>
+
+<table class="table table-striped  table-bordered">
+    <thead >
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Email</th>
+        <th scope="col">Address</th>
+        <th scope="col">Pincode</th>
+        <th scope="col">City</th>
+        <th scope="col">joined_on</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for i in new_users %}
+      <tr>
+        <td scope="row">{{forloop.counter}}</td>
+        <td>{{i.name}}</td>
+        <td>{{i.phone_number}}</td>
+        <td>{{i.email}}</td>
+        <td>{{i.address}}</td>
+        <td>{{i.pincode}}</td>
+        <td>{{i.city}}</td>
+        <td>{{i.created_at }}</td>
+      </tr>
+      {% endfor %}
+      
+    </tbody>
+  </table>
+
+  
+  
+
+
+{% endif %}
+
+<script>
+let months=["JAN","FEB","MAR","APR","MAY","JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+let currentMonth=new Date().getMonth()
+
+new Chart("myChart", {
+  type: "line",
+  data: {
+    labels: months.slice(currentMonth-6).concat(months.slice(0,currentMonth)),
+    datasets: [{ 
+      label:'# of Crimes / Month',
+      data: {{crime_count}},
+      borderColor: "red",
+      fill: false
+    }, ]
+  },
+  options: {
+    showTooltips: false,
+    ticks: {
+      stepSize: 5,
+         }
+  }
+});
+  </script>
+
+
+{% endblock%}
+
+

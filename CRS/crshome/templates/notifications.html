@@ -1,0 +1,47 @@
+{% extends  'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<style>
+  #admin_head{
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 3em;
+    letter-spacing: -2px;
+    border-bottom: 2px solid black;
+    text-transform: uppercase;
+  }
+
+</style>
+
+<!-- datatable -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/b-1.2.4/b-html5-1.2.4/b-print-1.2.4/fh-3.1.2/r-2.1.1/sc-1.4.2/datatables.min.js"></script>
+<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/css/style.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/b-1.2.4/b-html5-1.2.4/b-print-1.2.4/fh-3.1.2/r-2.1.1/sc-1.4.2/datatables.min.css" />
+
+
+<h1 id="admin_head">Inbox</h1><br><br>
+
+{% for i in notifications %}
+
+    {% comment %} <div class="card">
+         {{i.text}} - {% if i.read == False %}<a href="{% url 'home:mark-as-read' i.id %}">Mark as read</a> {% endif %}
+    </div> {% endcomment %}
+
+    <div class="alert alert-success" role="alert">
+      <h4 class="alert-heading"></h4>
+      <p> {{i.text}}</p>
+      <hr>
+      <p class="mb-0">{% if i.read == False %}<a href="{% url 'home:mark-as-read' i.id %}">Mark as read</a> {% endif %}</p>
+    </div>
+    <br>
+
+{% endfor %}
+
+{% endblock%}
+
+
